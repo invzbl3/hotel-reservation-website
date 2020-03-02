@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace hotel_reservation_website.Models
 {
@@ -13,6 +14,7 @@ namespace hotel_reservation_website.Models
         public string RoomTypeID { get; set; }
         public virtual RoomType RoomType { get; set; }
         [Required]
+        //[Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
         public bool Available { get; set; }
 

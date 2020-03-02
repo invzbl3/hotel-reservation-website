@@ -12,6 +12,7 @@ using hotel_reservation_website.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using hotel_reservation_website.Services;
 
 namespace hotel_reservation_website
 {
@@ -31,7 +32,9 @@ namespace hotel_reservation_website
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddScoped(typeof(IGenericHotelService<>), typeof(GenericHotelService<>));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

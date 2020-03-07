@@ -56,7 +56,7 @@ namespace hotel_reservation_website
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

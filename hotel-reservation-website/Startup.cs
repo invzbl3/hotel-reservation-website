@@ -31,6 +31,7 @@ namespace hotel_reservation_website
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
             services.AddScoped(typeof(IGenericHotelService<>), typeof(GenericHotelService<>));

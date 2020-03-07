@@ -1,11 +1,11 @@
 ﻿@model hotel_reservation_website.Models.Room
 
+@using hotel_reservation_website.ViewModels
+
 @{
     ViewData["Title"] = "Edit";
 }
-
 <h2>Edit</h2>
-
 <h4>Room</h4>
 <hr />
 <div class="row">
@@ -45,17 +45,25 @@
                 <input asp-for="MaximumGuests" class="form-control" />
                 <span asp-validation-for="MaximumGuests" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Features" class="control-label"></label>
+                @foreach (var roomFeature in ViewBag.Features as IEnumerable<SelectedRoomFeatureViewModel>)
+                {
+                    <p>
+                        <input type="checkbox" name="SelectedFeatureIDs" value="@roomFeature.FeatureID" @Html.Raw(roomFeature.Selected ? "checked=\"checked\"" : "") />@roomFeature.Feature.Name
+                    </p>
+                }
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

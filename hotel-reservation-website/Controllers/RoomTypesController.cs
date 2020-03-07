@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using hotel_reservation_website.Models;
 using hotel_reservation_website.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace hotel_reservation_website.Controllers
 {
@@ -25,7 +25,7 @@ namespace hotel_reservation_website.Controllers
             return View(await _hotelService.GetAllItemsAsync());
         }
 
-        // GET: RoomTypes/Details/5    
+        // GET: RoomTypes/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -35,11 +35,14 @@ namespace hotel_reservation_website.Controllers
 
             var roomType = await _hotelService.GetItemByIdAsync(id);
 
+
             if (roomType == null)
             {
                 return NotFound();
             }
 
+            var rooms = _hotelService.GetAllRooms().Where(x => x.RoomTypeID == id);
+            ViewData["CategoryRooms"] = rooms;
             return View(roomType);
         }
 
@@ -141,10 +144,5 @@ namespace hotel_reservation_website.Controllers
             await _hotelService.DeleteItemAsync(roomType);
             return RedirectToAction(nameof(Index));
         }
-
-        //private bool RoomTypeExists(string id)
-        //{
-        //    return _context.RoomTypes.Any(e => e.ID == id);
-        //}
     }
 }

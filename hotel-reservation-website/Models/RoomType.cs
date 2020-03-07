@@ -10,7 +10,7 @@ namespace hotel_reservation_website.Models
         [Required]
         public string Name { get; set; }
         [Required]
-        //[Column(TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal BasePrice { get; set; }
 
         [DataType(DataType.MultilineText)]
@@ -18,6 +18,5 @@ namespace hotel_reservation_website.Models
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
-
     }
 }

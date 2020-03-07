@@ -1,11 +1,10 @@
 ﻿@model hotel_reservation_website.Models.Room
+@using hotel_reservation_website.ViewModels
 
 @{
     ViewData["Title"] = "Create";
 }
-
 <h2>Create</h2>
-
 <h4>Room</h4>
 <hr />
 <div class="row">
@@ -18,7 +17,7 @@
                 <span asp-validation-for="Number" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RoomTypeID" class="control-label"></label>
+                <label asp-for="RoomTypeID" class="control-label">Room Category</label>
                 <select asp-for="RoomTypeID" class="form-control" asp-items="ViewBag.RoomTypeID"></select>
             </div>
             <div class="form-group">
@@ -44,16 +43,23 @@
                 <span asp-validation-for="MaximumGuests" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Features" class="control-label"></label>
+                @foreach (var roomFeature in ViewBag.Features as IEnumerable<SelectedRoomFeatureViewModel>)
+                {
+                    <p>
+                        <input type="checkbox" name="SelectedFeatureIDs" value="@roomFeature.FeatureID" @Html.Raw(roomFeature.Selected ? "checked=\"checked\"" : "") />@roomFeature.Feature.Name
+                    </p>
+                }
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

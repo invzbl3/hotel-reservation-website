@@ -53,10 +53,8 @@ namespace hotel_reservation_website
                 // app.UseHsts();
             }
             //app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseStaticFiles();
-
-            //app.UseRouting();
-
             app.UseAuthentication();
             //app.UseAuthorization();
 

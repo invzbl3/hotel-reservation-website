@@ -14,7 +14,7 @@ namespace hotel_reservation_website.Models
         public string RoomTypeID { get; set; }
         public virtual RoomType RoomType { get; set; }
         [Required]
-        //[Column(TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
         public bool Available { get; set; }
 
@@ -27,6 +27,5 @@ namespace hotel_reservation_website.Models
         public virtual ICollection<Image> RoomImages { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
-
     }
 }

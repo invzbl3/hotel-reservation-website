@@ -1,22 +1,23 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using hotel_reservation_website.Data;
 using hotel_reservation_website.Models;
 using hotel_reservation_website.Services;
 using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hotel_reservation_website.Controllers
 {
+    [Authorize]
     public class RoomsController : Controller
     {
         private readonly IGenericHotelService<Room> _hotelService;
 
-        public RoomsController(IGenericHotelService<Room> hotelService)
+        public RoomsController(IGenericHotelService<Room> genericHotelService)
         {
-            _hotelService = hotelService;
+            _hotelService = genericHotelService;
         }
 
         // GET: Rooms
@@ -33,13 +34,17 @@ namespace hotel_reservation_website.Controllers
                 return NotFound();
             }
 
-            var room = await _hotelService.GetItemByIdAsync(id);
+            var room = _hotelService.GetAllRooms().SingleOrDefault(x => x.ID == id);
+
 
             if (room == null)
             {
                 return NotFound();
             }
 
+            var ImagesAndFeatures = await _hotelService.GetRoomFeaturesAndImagesAsync(room);
+            ViewData["Features"] = ImagesAndFeatures.Features;
+            ViewData["Images"] = ImagesAndFeatures.Images;
             return View(room);
         }
 
@@ -48,6 +53,11 @@ namespace hotel_reservation_website.Controllers
         {
             var RoomTypes = _hotelService.GetAllRoomTypesAsync().Result;
             ViewData["RoomTypeID"] = new SelectList(RoomTypes, "ID", "Name");
+
+            var room = new Room();
+            ViewData["Features"] = _hotelService.PopulateSelectedFeaturesForRoom(room);
+
+
             return View();
         }
 
@@ -56,19 +66,22 @@ namespace hotel_reservation_website.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Number,RoomTypeID,Price,Available,Description,MaximumGuests")] Room room)
+        public async Task<IActionResult> Create([Bind("Number,RoomTypeID,Price,Available,Description,MaximumGuests")] Room room, string[] SelectedFeatureIDs, string[] imageIDs)
         {
             if (ModelState.IsValid)
             {
                 room.ID = Guid.NewGuid().ToString();
                 await _hotelService.CreateItemAsync(room);
+                _hotelService.UpdateRoomFeaturesList(room, SelectedFeatureIDs);
+                _hotelService.UpdateRoomImagesList(room, imageIDs);
                 return RedirectToAction(nameof(Index));
             }
-           
-            //var RoomTypes = _hotelService.GetAllRoomTypesAsync().Result;
-            //ViewData["RoomTypeID"] = new SelectList(RoomTypes, "ID", "Name", room.RoomType.ID);
+            ViewData["Features"] = _hotelService.PopulateSelectedFeaturesForRoom(room);
+            var ImagesAndFeatures = await _hotelService.GetRoomFeaturesAndImagesAsync(room);
+            ViewData["Images"] = ImagesAndFeatures.Images;
             return View(room);
         }
+
 
         // GET: Rooms/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -85,6 +98,10 @@ namespace hotel_reservation_website.Controllers
             }
             var RoomTypes = _hotelService.GetAllRoomTypesAsync().Result;
             ViewData["RoomTypeID"] = new SelectList(RoomTypes, "ID", "Name", room.RoomType.ID);
+
+            ViewData["Features"] = _hotelService.PopulateSelectedFeaturesForRoom(room);
+            var ImagesAndFeatures = await _hotelService.GetRoomFeaturesAndImagesAsync(room);
+            ViewData["Images"] = ImagesAndFeatures.Images;
             return View(room);
         }
 
@@ -93,18 +110,22 @@ namespace hotel_reservation_website.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Number,RoomTypeID,Price,Available,Description,MaximumGuests")] Room room)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Number,RoomTypeID,Price,Available,Description,MaximumGuests")] Room room, string[] SelectedFeatureIDs, string[] imageIDs)
         {
             if (id != room.ID)
             {
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     await _hotelService.EditItemAsync(room);
+                    _hotelService.UpdateRoomFeaturesList(room, SelectedFeatureIDs);
+                    _hotelService.UpdateRoomImagesList(room, imageIDs);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,8 +142,14 @@ namespace hotel_reservation_website.Controllers
             }
             var RoomTypes = _hotelService.GetAllRoomTypesAsync().Result;
             ViewData["RoomTypeID"] = new SelectList(RoomTypes, "ID", "ID", room.RoomTypeID);
+            ViewData["Features"] = _hotelService.PopulateSelectedFeaturesForRoom(room);
+            var ImagesAndFeatures = await _hotelService.GetRoomFeaturesAndImagesAsync(room);
+            ViewData["Images"] = ImagesAndFeatures.Images;
             return View(room);
         }
+
+
+
 
         // GET: Rooms/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -133,7 +160,6 @@ namespace hotel_reservation_website.Controllers
             }
 
             var room = await _hotelService.GetItemByIdAsync(id);
-               
             if (room == null)
             {
                 return NotFound();
@@ -147,14 +173,17 @@ namespace hotel_reservation_website.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+
             var roomType = await _hotelService.GetItemByIdAsync(id);
             await _hotelService.DeleteItemAsync(roomType);
             return RedirectToAction(nameof(Index));
         }
 
-        //private bool RoomExists(string id)
-        //{
-        //    return _context.Rooms.Any(e => e.ID == id);
-        //}
+
+        //This method simply populates a ViewBag with selected features pertaining to the room in question
+        //using the SelectedRoomFeatureViewModel which contains a feature and a boolean indicating if the checkbox should be selected or not.
+
+
+
     }
 }

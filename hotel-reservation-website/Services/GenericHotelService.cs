@@ -118,7 +118,7 @@ namespace hotel_reservation_website.Services
         public void UpdateRoomFeaturesList(Room room, string[] SelectedFeatureIDs)
         {
             var PreviouslySelectedFeatures = _context.RoomFeatureRelationships.Where(x => x.RoomID == room.ID);
-            _context.RoomFeatureRelationships.RemoveRange(PreviouslySelectedFeatures); // invalid object name exception
+            _context.RoomFeatureRelationships.RemoveRange(PreviouslySelectedFeatures); 
             _context.SaveChanges();
 
 

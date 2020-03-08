@@ -73,7 +73,7 @@ namespace hotel_reservation_website.Controllers
                 room.ID = Guid.NewGuid().ToString();
                 await _hotelService.CreateItemAsync(room);
                 _hotelService.UpdateRoomFeaturesList(room, SelectedFeatureIDs);
-                _hotelService.UpdateRoomImagesList(room, imageIDs);
+                _hotelService.UpdateRoomImagesList(room, imageIDs); // invalid object name exception
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Features"] = _hotelService.PopulateSelectedFeaturesForRoom(room);

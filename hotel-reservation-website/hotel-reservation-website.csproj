@@ -21,8 +21,55 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
 
-
+  <ItemGroup>
+    <None Include="wwwroot\css\plugin\.DS_Store" />
+    <None Include="wwwroot\css\plugin\bootstrap-toggle\.DS_Store" />
+    <None Include="wwwroot\fonts\.DS_Store" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\img\.DS_Store" />
+    <None Include="wwwroot\img\alerticons\.DS_Store" />
+    <None Include="wwwroot\img\datatables\.DS_Store" />
+    <None Include="wwwroot\img\modalicons\.DS_Store" />
+    <None Include="wwwroot\js\bootstrap-select\bootstrap-select.js" />
+    <None Include="wwwroot\js\bootstrap-toggle\bootstrap-toggle.min.js" />
+    <None Include="wwwroot\js\bootstrap-wysihtml5\bootstrap-wysihtml5.js" />
+    <None Include="wwwroot\js\bootstrap-wysihtml5\wysihtml5-0.3.0.min.js" />
+    <None Include="wwwroot\js\bootstrap\bootstrap.min.js" />
+    <None Include="wwwroot\js\chartist\.DS_Store" />
+    <None Include="wwwroot\js\chartist\chartist-plugin.js" />
+    <None Include="wwwroot\js\chartist\chartist.js" />
+    <None Include="wwwroot\js\datatables\datatables.min.js" />
+    <None Include="wwwroot\js\date-range-picker\daterangepicker.js" />
+    <None Include="wwwroot\js\easypiechart\easypiechart-plugin.js" />
+    <None Include="wwwroot\js\easypiechart\easypiechart.js" />
+    <None Include="wwwroot\js\flot-chart\flot-chart-pie.js" />
+    <None Include="wwwroot\js\flot-chart\flot-chart-plugin.js" />
+    <None Include="wwwroot\js\flot-chart\flot-chart-stack.js" />
+    <None Include="wwwroot\js\flot-chart\flot-chart-time.js" />
+    <None Include="wwwroot\js\flot-chart\flot-chart.js" />
+    <None Include="wwwroot\js\full-calendar\fullcalendar.js" />
+    <None Include="wwwroot\js\gmaps\gmaps-plugin.js" />
+    <None Include="wwwroot\js\gmaps\gmaps.js" />
+    <None Include="wwwroot\js\jquery-ui\jquery-ui.min.js" />
+    <None Include="wwwroot\js\kode-alert\main.js" />
+    <None Include="wwwroot\js\moment\moment.min.js" />
+    <None Include="wwwroot\js\rickshaw\d3.v3.js" />
+    <None Include="wwwroot\js\rickshaw\rickshaw-plugin.js" />
+    <None Include="wwwroot\js\rickshaw\rickshaw.js" />
+    <None Include="wwwroot\js\sparkline\sparkline-plugin.js" />
+    <None Include="wwwroot\js\sparkline\sparkline.js" />
+    <None Include="wwwroot\js\summernote\summernote.min.js" />
+    <None Include="wwwroot\js\sweet-alert\sweet-alert.min.js" />
+  </ItemGroup>
+  
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/appveyor" /></VisualStudio></ProjectExtensions>
 
 </Project>
